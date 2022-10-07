@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import NFTAbi from "assets/abis/nft.json";
 import { toast } from "react-toastify";
 
+// Make changes as needed
 export const chainId = 80001;
 const DAPP_ID = process.env.REACT_APP_DAPP_ID || "";
 const API_KEY = process.env.REACT_APP_API_KEY || "";
