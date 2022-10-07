@@ -66,6 +66,7 @@ export const useBunzz = () => {
       await getOwnedNFTs(contract, signer);
     } catch (error) {
       console.error(error);
+      toast.error("An error has occurred");
     } finally {
       setIsInitializing(false);
     }
