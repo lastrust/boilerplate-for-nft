@@ -6,6 +6,8 @@ This boilerplate is for NFT Minting applications. Using this boiler plate, a min
 
 # Getting started
 
+I will now show you how to use this boilerplate. If you get stuck, please ask on [our discord](https://discord.gg/wCFUV6rNd7).
+
 ## 1. Store metadata for NFTs
 
 ### Get an overview
