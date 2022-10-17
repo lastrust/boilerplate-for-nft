@@ -263,16 +263,11 @@ The method of obtaining each value will now be explained.
 ```
 REACT_APP_DAPP_ID=<your dapp id>
 REACT_APP_API_KEY=<your api key>
-REACT_APP_CONTRACT_ADDRESS=your contract address
 ```
 
 DApp ID and API Key can be viewed by clicking Client SDK from the sidebar of the app.
 
 <img width="238" alt="スクリーンショット 2022-10-11 14 46 08" src="https://user-images.githubusercontent.com/53442928/195006480-96fa2eda-f4ec-40e1-a631-a9d4ff19cd78.png">
-
-The contract address can be obtained from the copy button to the right of the module name.
-
-<img width="989" alt="スクリーンショット 2022-10-11 14 52 24" src="https://user-images.githubusercontent.com/53442928/195007337-8a89c1cb-6533-4794-9acc-e76934d041ef.png">
 
 If you are using something other than Mumbai Testnet, change the following constants as needed.
 
