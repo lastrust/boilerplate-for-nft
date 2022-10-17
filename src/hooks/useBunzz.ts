@@ -11,6 +11,7 @@ const NETWORK_INFO = {
   nativeCurrency: { name: "GoerliETH", decimals: 18, symbol: "GoerliETH" },
   rpcUrls: ["https://goerli.infura.io/v3/"],
 };
+const RPC_URL = "https://goerli.infura.io/v3/9aa3d95b3bc440fa88ea12eaa4456161";
 const IPFS_GW_BASEURL_JSON = `https://cloudflare-ipfs.com/ipfs`;
 // ===== Make changes as needed (end) ======
 
@@ -56,19 +57,21 @@ export const useBunzz = () => {
   const init = async () => {
     try {
       setIsInitializing(true);
+
+      // Initialize bunzz
       const handler = await bunzz.init({
         dappId: DAPP_ID,
         apiKey: API_KEY,
-        readonlyProviderRpcUrl:
-          "https://goerli.infura.io/v3/9aa3d95b3bc440fa88ea12eaa4456161",
+        readonlyProviderRpcUrl: RPC_URL,
       });
-      const signer = handler.getSigner();
-      if (signer) {
-        setup(handler);
-      }
-
       setReadonlyContract(handler.getReadonlyContract(MODULE_NAME));
       setHandler(handler);
+
+      // If the user is connected to the wallet, set the required properties
+      const signer = handler.getSigner();
+      if (signer) {
+        await setup(handler);
+      }
     } catch (error) {
       console.error(error);
       toast.error("An error has occurred");
@@ -77,17 +80,21 @@ export const useBunzz = () => {
     }
   };
 
+  // Connect to the wallet
   const connect = async () => {
     if (!handler) return;
 
     try {
+      // Reqest to connect to the wallet
       await handler.connectWallet();
+      // If the user connects to the wallet, set the required properties
       await setup(handler);
     } catch (error) {
       console.error(error);
     }
   };
 
+  // Set the contract, owned NFTs, signer address and network
   const setup = async (handler: Handler) => {
     const provider = handler.getProvider();
     const contract = handler.getContract(MODULE_NAME);
@@ -101,15 +108,19 @@ export const useBunzz = () => {
     setSignerAddr(signer);
   };
 
+  // Switch chain to the specified chain from bunzz application
   const switchChain = async () => {
     try {
       setIsSwitching(true);
+
+      // Request to switch chain
       await window.ethereum?.request({
         method: "wallet_switchEthereumChain",
         params: [{ chainId: "0x" + chainId.toString(16) }],
       });
     } catch (error) {
       console.log(error);
+      // If the specified chain is not set in the user's metamask, request the addition of a chain
       if ((error as any).code === 4902) {
         await window.ethereum?.request({
           method: "wallet_addEthereumChain",
@@ -121,11 +132,14 @@ export const useBunzz = () => {
     }
   };
 
+  // Mint NFTs by paying
   const mint = async (amount: number) => {
     if (!contract || !signerAddr || !readonlyContract) return;
 
     try {
       setIsMinting(true);
+
+      // Mint
       const tx = await contract.publicMint(amount, {
         value: (Number(cost) * amount * 10 ** 18).toString(),
       });
@@ -134,6 +148,7 @@ export const useBunzz = () => {
       console.log(receipt);
       toast("NFT minted");
 
+      // Refetch data to update UI
       await fetchInfo();
       await getOwnedNFTs(contract, signerAddr);
     } catch (error) {
@@ -144,6 +159,7 @@ export const useBunzz = () => {
     }
   };
 
+  // Fetch information related to NFT
   const fetchInfo = async () => {
     if (!readonlyContract) return;
 
@@ -152,27 +168,32 @@ export const useBunzz = () => {
     await getMintedNum(readonlyContract);
   };
 
+  // Get max supply from contract
   const getMaxSupply = async (contract: Contract) => {
     const maxSupply = await contract.maxSupply();
     setMaxSupply(parseInt(maxSupply.data));
   };
 
+  // Get cost from contract
   const getCost = async (contract: Contract) => {
     const res = await contract.publicCost();
     setCost((Number(res.data) / 10 ** 18).toString());
   };
 
+  // Get number of minted from contract
   const getMintedNum = async (contract: Contract) => {
     const res = await contract.totalSupply();
     setMintedNum(parseInt(res.data));
   };
 
+  // Get owned NFTs from contract and IPFS
   const getOwnedNFTs = async (contract: Contract, address: string) => {
     const tokenIds = await getTokenIds(contract, address);
     const metadataList = await getMetadata(contract, tokenIds);
     setMetadataList(metadataList);
   };
 
+  // Get token ids from contract
   const getTokenIds = async (contract: Contract, address: string) => {
     const balanceRes = await contract.balanceOf(address);
     const balance = balanceRes.data;
@@ -184,11 +205,12 @@ export const useBunzz = () => {
     return tokenIds;
   };
 
+  // Get metadata from IPFS
   const getMetadata = async (contract: Contract, tokenIds: number[]) => {
     const metadataURIs = await Promise.all(
       tokenIds.map(async (tokenId) => {
         const tokenURI = await contract.tokenURI(tokenId);
-        const uriSuffix = tokenURI.data.split("//")[1];
+        const uriSuffix = getHashFromIpfsUri(tokenURI.data);
         return `${IPFS_GW_BASEURL_JSON}/${uriSuffix}`;
       })
     );
@@ -199,7 +221,7 @@ export const useBunzz = () => {
           method: "GET",
         });
         const body = await res.json();
-        const imageURISuffix = body.image.split("//")[1];
+        const imageURISuffix = getHashFromIpfsUri(body.image);
         const imageURI = `${IPFS_GW_BASEURL_JSON}/${imageURISuffix}`;
         const metadata: Metadata = {
           imageURI,
@@ -225,4 +247,8 @@ export const useBunzz = () => {
     switchChain,
     connect,
   };
+};
+
+const getHashFromIpfsUri = (uri: string): string => {
+  return uri.split("//")[1];
 };
