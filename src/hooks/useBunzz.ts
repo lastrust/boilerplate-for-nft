@@ -3,15 +3,14 @@ import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 
 // ===== Make changes as needed (start) =====
-export const chainId = 5;
-const MODULE_NAME = "MintingModuleWithSetters"; // This value is the name of module in Bunzz App.
+export const chainId = 80001;
+const MODULE_NAME = "NFTMintingModule"; // This value is the name of module in Bunzz App.
 const NETWORK_INFO = {
-  chainName: "Goerli Testnet",
+  chainName: "Mumbai Testnet",
   chainId: "0x" + chainId.toString(16),
-  nativeCurrency: { name: "GoerliETH", decimals: 18, symbol: "GoerliETH" },
-  rpcUrls: ["https://goerli.infura.io/v3/"],
+  nativeCurrency: { name: "MATIC", decimals: 18, symbol: "MATIC" },
+  rpcUrls: ["https://rpc-mumbai.maticvigil.com"],
 };
-const RPC_URL = "https://goerli.infura.io/v3/9aa3d95b3bc440fa88ea12eaa4456161";
 const IPFS_GW_BASEURL_JSON = `https://cloudflare-ipfs.com/ipfs`;
 // ===== Make changes as needed (end) ======
 
@@ -62,7 +61,6 @@ export const useBunzz = () => {
       const handler = await bunzz.init({
         dappId: DAPP_ID,
         apiKey: API_KEY,
-        readonlyProviderRpcUrl: RPC_URL,
       });
       setReadonlyContract(handler.getReadonlyContract(MODULE_NAME));
       setHandler(handler);
