@@ -1,26 +1,22 @@
-import bunzz, { Contract } from "bunzz-sdk";
-import { ethers } from "ethers";
+import bunzz, { Contract, Handler } from "bunzz-sdk";
 import { useEffect, useState } from "react";
-import NFTAbi from "assets/abis/nft.json";
 import { toast } from "react-toastify";
 
-// Make changes as needed
-export const chainId = 80001;
+// ===== Make changes as needed (start) =====
+export const chainId = 5;
+const MODULE_NAME = "MintingModuleWithSetters"; // This value is the name of module in Bunzz App.
+const NETWORK_INFO = {
+  chainName: "Goerli Testnet",
+  chainId: "0x" + chainId.toString(16),
+  nativeCurrency: { name: "GoerliETH", decimals: 18, symbol: "GoerliETH" },
+  rpcUrls: ["https://goerli.infura.io/v3/"],
+};
+const IPFS_GW_BASEURL_JSON = `https://cloudflare-ipfs.com/ipfs`;
+// ===== Make changes as needed (end) ======
+
+// You can get these values from "Client SDK" in sidebar of Bunzz App
 const DAPP_ID = process.env.REACT_APP_DAPP_ID || "";
 const API_KEY = process.env.REACT_APP_API_KEY || "";
-const IPFS_GW_BASEURL_JSON = `https://cloudflare-ipfs.com/ipfs`;
-const CONTRACT_ADDRESS = process.env.REACT_APP_CONTRACT_ADDRESS || "";
-const MODULE_NAME = "NFTMintingModule";
-const NETWORK_INFO = {
-  chainName: "Mumbai Testnet",
-  chainId: "0x" + chainId.toString(16),
-  nativeCurrency: { name: "MATIC", decimals: 18, symbol: "MATIC" },
-  rpcUrls: ["https://rpc-mumbai.maticvigil.com"],
-};
-
-const readProvider = new ethers.providers.JsonRpcProvider(
-  NETWORK_INFO.rpcUrls[0]
-);
 
 export type Metadata = {
   name: string;
@@ -29,8 +25,12 @@ export type Metadata = {
 
 export type UseBunzzReturns = ReturnType<typeof useBunzz>;
 
+// This is a hook that wrap Bunzz SDK.
+// Documentation of bunzz-sdk is here (https://docs.bunzz.dev/product-docs/sdk/guides).
 export const useBunzz = () => {
+  const [handler, setHandler] = useState<Handler>();
   const [contract, setContract] = useState<Contract>();
+  const [readonlyContract, setReadonlyContract] = useState<Contract>();
   const [signerAddr, setSignerAddr] = useState("");
 
   const [isInitializing, setIsInitializing] = useState(false);
@@ -45,32 +45,60 @@ export const useBunzz = () => {
 
   useEffect(() => {
     init();
-    fetchInfo();
   }, []);
+
+  useEffect(() => {
+    if (!readonlyContract) return;
+
+    fetchInfo();
+  }, [readonlyContract]);
 
   const init = async () => {
     try {
       setIsInitializing(true);
-      const handler = await bunzz.initializeHandler({
+      const handler = await bunzz.init({
         dappId: DAPP_ID,
         apiKey: API_KEY,
+        readonlyProviderRpcUrl:
+          "https://goerli.infura.io/v3/9aa3d95b3bc440fa88ea12eaa4456161",
       });
-      const contract = handler.getContract(MODULE_NAME);
-      const signer = await handler.getSignerAddress();
-      const provider = handler.getProvider();
-      const network = await provider.getNetwork();
+      const signer = handler.getSigner();
+      if (signer) {
+        setup(handler);
+      }
 
-      setIsCorrectChain(network.chainId === chainId);
-      setContract(contract);
-      setSignerAddr(signer);
-
-      await getOwnedNFTs(contract, signer);
+      setReadonlyContract(handler.getReadonlyContract(MODULE_NAME));
+      setHandler(handler);
     } catch (error) {
       console.error(error);
       toast.error("An error has occurred");
     } finally {
       setIsInitializing(false);
     }
+  };
+
+  const connect = async () => {
+    if (!handler) return;
+
+    try {
+      await handler.connectWallet();
+      await setup(handler);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const setup = async (handler: Handler) => {
+    const provider = handler.getProvider();
+    const contract = handler.getContract(MODULE_NAME);
+    const readonlyContract = handler.getReadonlyContract(MODULE_NAME);
+    const network = await provider.getNetwork();
+    const signer = await handler.getSignerAddress();
+    await getOwnedNFTs(readonlyContract, signer);
+
+    setContract(contract);
+    setIsCorrectChain(network.chainId === chainId);
+    setSignerAddr(signer);
   };
 
   const switchChain = async () => {
@@ -94,12 +122,12 @@ export const useBunzz = () => {
   };
 
   const mint = async (amount: number) => {
-    if (!contract || !signerAddr) return;
+    if (!contract || !signerAddr || !readonlyContract) return;
 
     try {
       setIsMinting(true);
       const tx = await contract.publicMint(amount, {
-        value: ethers.utils.parseEther((Number(cost) * amount).toString()),
+        value: (Number(cost) * amount * 10 ** 18).toString(),
       });
       console.log(tx);
       const receipt = await tx.wait();
@@ -117,29 +145,26 @@ export const useBunzz = () => {
   };
 
   const fetchInfo = async () => {
-    const contract = getContract();
-    await getMaxSupply(contract);
-    await getCost(contract);
-    await getMintedNum(contract);
+    if (!readonlyContract) return;
+
+    await getMaxSupply(readonlyContract);
+    await getCost(readonlyContract);
+    await getMintedNum(readonlyContract);
   };
 
-  const getContract = () => {
-    return new ethers.Contract(CONTRACT_ADDRESS, NFTAbi, readProvider);
+  const getMaxSupply = async (contract: Contract) => {
+    const maxSupply = await contract.maxSupply();
+    setMaxSupply(parseInt(maxSupply.data));
   };
 
-  const getMaxSupply = async (readContract: ethers.Contract) => {
-    const maxSupply = await readContract.maxSupply();
-    setMaxSupply(parseInt(maxSupply._hex, 16));
+  const getCost = async (contract: Contract) => {
+    const res = await contract.publicCost();
+    setCost((Number(res.data) / 10 ** 18).toString());
   };
 
-  const getCost = async (readContract: ethers.Contract) => {
-    const res = await readContract.publicCost();
-    setCost(ethers.utils.formatEther(res));
-  };
-
-  const getMintedNum = async (readContract: ethers.Contract) => {
-    const res = await readContract.totalSupply();
-    setMintedNum(parseInt(res, 16));
+  const getMintedNum = async (contract: Contract) => {
+    const res = await contract.totalSupply();
+    setMintedNum(parseInt(res.data));
   };
 
   const getOwnedNFTs = async (contract: Contract, address: string) => {
@@ -196,8 +221,8 @@ export const useBunzz = () => {
     maxSupply,
     mintedNum,
     metadataList,
-    init,
     mint,
     switchChain,
+    connect,
   };
 };

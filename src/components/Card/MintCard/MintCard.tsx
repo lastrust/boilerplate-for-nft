@@ -20,7 +20,7 @@ export const MintCard: FC<Props> = (props) => {
     isCorrectChain,
     isSwitching,
     metadataList,
-    init,
+    connect,
     switchChain,
   } = props;
   const [amount, setAmount] = useState(1);
@@ -60,7 +60,7 @@ export const MintCard: FC<Props> = (props) => {
                 <div className="body-2">Connect to Ethereum Mainenet</div>
                 <Button
                   variant="outline"
-                  onClick={init}
+                  onClick={connect}
                   isLoading={isInitializing}
                 >
                   Connect
