@@ -6,7 +6,9 @@ This boilerplate is for NFT Minting applications. Using this boiler plate, a min
 
 # Getting started
 
-I will now show you how to use this boilerplate. If you get stuck, please ask on [our discord](https://discord.gg/wCFUV6rNd7).
+I will now show you how to use this boilerplate. 
+
+Need help? Ask in [our discord](https://discord.gg/wCFUV6rNd7).
 
 ## 1. Store metadata for NFTs
 
@@ -62,6 +64,8 @@ Since the image field requires the URI of the image to be entered, the first ste
 
 These JSON and images can be created manually, but there is a useful tool called hashlips that can be used to create generative NFT.
 
+The basic generative NFT is created by creating multiple images, one for each layer of background color, hat, etc., and combining them. hashlips is a tool that makes it easy to do this.
+
 https://github.com/HashLips/hashlips_art_engine
 
 We will use this repository, so download it.
@@ -71,7 +75,7 @@ $ git clone https://github.com/HashLips/hashlips_art_engine
 
 Go to the hashlips directory and install the dependencies. 
 
-**Note:** I used node version `14.18.x`, because hashlips had an error when using node version `16.x`.
+**Note:** Use node version `14.18.x`.
 
 ```bash
 $ yarn install
