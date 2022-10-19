@@ -1,0 +1,22 @@
+.button {
+  padding: 0 32px;
+  height: 58px;
+  font-size: 18px;
+  font-weight: 400;
+  background-color: transparent;
+  border: none;
+  color: white;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.outline {
+  border: 2px solid #1D253B;
+  color: #1D253B;
+  cursor: pointer;
+}
+
+.solid {
+  background-color: #1D253B;
+  color: white;
+}

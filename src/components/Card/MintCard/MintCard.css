@@ -1,0 +1,131 @@
+.card {
+  padding: 24px;
+  box-shadow: 0px 20px 60px rgba(0, 9, 28, 0.05);
+  border-radius: 8px;
+  background-color: white;
+}
+
+.mint-card-image {
+  width: 100%;
+  aspect-ratio: 1;
+  object-fit: cover;
+  border-radius: 8px;
+}
+
+.numbers {
+  font-weight: 700;
+  font-size: 32px;
+  line-height: 120%;
+  margin: 24px 0;
+}
+
+.bar-base {
+  border-radius: 100px;
+  border: 2px solid #DEDFE4;
+  height: 12px;
+}
+
+.bar {
+  background: #1D253B;
+  border-radius: 100px;
+  height: 12px;
+}
+
+.amount-wrapper {
+  margin-bottom: 16px;
+}
+
+.owned-nfts-wrapper {
+  margin-top: 40px;
+  background-color: #F6F7F9;
+  border-radius: 8px;
+  padding: 10px 0px 24px 24px;
+}
+
+.owned-nfts {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  overflow: scroll;
+}
+
+.owned-nfts-title {
+  font-weight: 700;
+  font-size: 18px;
+  line-height: 32px;
+  margin-bottom: 16px;
+}
+
+.nft-card {
+  display: flex;
+  align-items: center;
+  background-color: white;
+  width: fit-content;
+  border-radius: 8px;
+}
+
+.nft-card-image {
+  border-radius: 8px;
+  width: 88px;
+  height: 88px;
+}
+
+.nft-card-info {
+  padding: 16px 24px;
+}
+
+.nft-card-info-name {
+  font-weight: 700;
+  font-size: 18px;
+  line-height: 32px;
+  white-space: nowrap;
+}
+
+.address-box {
+  padding: 6px 18px;
+  border: 2px solid #E8E9EB;
+  border-radius: 8px;
+  margin-bottom: 18px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.address-box-check {
+  margin-right: 8px;
+}
+
+@media only screen and (min-width: 768px) {
+  .card-container {
+    display: flex;
+  }
+
+  .mint-card-image {
+    width: 260px;
+    height: 260px;
+    margin-right: 24px;
+  }
+
+  .mint-form {
+    display: flex;
+    gap: 16px;
+  }
+
+  .mint-card-info {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+
+  .amount-wrapper {
+    margin-bottom: 0;
+  }
+}
+
+@media only screen and (min-width: 1024px) {
+  .mint-card-image {
+    width: 360px;
+    height: 360px;
+    margin-right: 48px;
+  }
+}

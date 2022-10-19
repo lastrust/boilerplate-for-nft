@@ -1,0 +1,36 @@
+.accordion-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 32px;
+}
+
+.accordion-item {
+  padding: 16px 0;
+}
+
+.accordion-item:not(:last-child) {
+  border-bottom: 2px solid #E8E9EB;
+}
+
+.accordion-button {
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  height: 20px;
+  width: 20px;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.up-arrow {
+  transform: rotateX(180deg)
+}
+
+.content {
+  padding: 12px;
+}

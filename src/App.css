@@ -1,38 +1,94 @@
-.App {
-  text-align: center;
+.main {
+  padding-bottom: 120px;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+.p-app {
+  padding-left: 24px;
+  padding-right: 24px;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+.description {
+  font-weight: 400;
+  font-size: 18px;
+  color: #626567;
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+.coins {
+  margin-top: 64px;
+}
+
+.connect-btn {
+  margin-top: 10px;
+}
+
+.first-section {
+  margin-top: 100px;
+}
+
+.section {
+  padding-top: 120px;
+}
+
+.roadmap {
+  width: fit-content;
+  margin: 0 auto;
+  margin-top: 14px;
+}
+
+.members {
   display: flex;
-  flex-direction: column;
-  align-items: center;
   justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 40px;
 }
 
-.App-link {
-  color: #61dafb;
-}
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
+@media only screen and (min-width: 768px) {
+  .p-app {
+    padding-left: 60px;
+    padding-right: 60px;
   }
-  to {
-    transform: rotate(360deg);
+
+  .roadmap {
+    width: 100%;
+    padding-top: 76px;
+  }
+
+  .mint-section {
+    position: relative;
+  }
+
+  .mint-section::after {
+    content: "";
+    background-color: #F6F7F9;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 50%;
+    z-index: -1;
+  }
+
+  .roadmap-section {
+    background-color: #F6F7F9;
+    padding-bottom: 160px;
+  }
+}
+
+@media only screen and (min-width: 1024px) {
+  .p-app {
+    padding-left: 160px;
+    padding-right: 160px;
+  }
+
+  .about-section {
+    display: flex;
+    align-items: center;
+    gap: 64px;
+  }
+
+  .coins {
+    width: 50%;
   }
 }

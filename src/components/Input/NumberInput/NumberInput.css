@@ -1,0 +1,31 @@
+.number-input {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  gap: 12px;
+  background-color: #E8E9EB;
+  padding: 13px 16px;
+}
+
+.icon-button {
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  border: none;
+  background-color: white;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 100%;
+}
+
+.number-input-box {
+  border: none;
+  background-color: transparent;
+  text-align: center;
+  font-weight: 400;
+  font-size: 24px;
+  line-height: 32px;
+  width: 80px;
+}
