@@ -6,7 +6,9 @@ This boilerplate is for NFT Minting applications. Using this boiler plate, a min
 
 # Getting started
 
-I will now show you how to use this boilerplate. 
+I will now show you how to use this boilerplate.
+
+Demo application is [here](https://main.d35ib1ruq9ljhz.amplifyapp.com/)
 
 Need help? Ask in [our discord](https://discord.gg/wCFUV6rNd7).
 
