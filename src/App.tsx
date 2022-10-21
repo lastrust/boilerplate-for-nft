@@ -59,19 +59,19 @@ function App() {
               imageSrc={MemberImg1}
               name="Akbar Shamji"
               role="President + CEO"
-              twitterLink="https://twitter.com/ropital_dev"
+              twitterLink="https://twitter.com/"
             />
             <MemberCard
               imageSrc={MemberImg2}
               name="Akbar Shamji"
               role="President + CEO"
-              twitterLink="https://twitter.com/ropital_dev"
+              twitterLink="https://twitter.com/"
             />
             <MemberCard
               imageSrc={MemberImg3}
               name="Akbar Shamji"
               role="President + CEO"
-              twitterLink="https://twitter.com/ropital_dev"
+              twitterLink="https://twitter.com/"
             />
           </div>
         </section>
