@@ -1,6 +1,6 @@
 import { Button } from "components/Button/Button";
 import { NumberInput } from "components/Input/NumberInput/NumberInput";
-import { UseBunzzReturns } from "hooks/useBunzz";
+import { NETWORK_INFO, UseBunzzReturns } from "hooks/useBunzz";
 import { FC, useState } from "react";
 import "./MintCard.css";
 import Check from "assets/svgs/check.svg";
@@ -44,7 +44,8 @@ export const MintCard: FC<Props> = (props) => {
             </div>
 
             <div className="body-1">
-              1ST costs {cost} ETH, excluding gas fees.
+              1ST costs {cost} {NETWORK_INFO.nativeCurrency.symbol}, excluding
+              gas fees.
             </div>
           </div>
 
@@ -124,7 +125,9 @@ const MintForm: FC<MintFormProps> = ({
         >
           {mintedNum === maxSupply
             ? "All minted"
-            : `Mint now (${Number(cost) * amount} ETH)`}
+            : `Mint now (${Number(cost) * amount} ${
+                NETWORK_INFO.nativeCurrency.symbol
+              })`}
         </Button>
       </div>
     </div>
