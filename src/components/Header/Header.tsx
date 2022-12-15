@@ -1,36 +1,36 @@
-import { FC, useState } from "react";
-import Logo from "../../assets/svgs/bunzz-logo.svg";
-import LeftArrow from "../../assets/svgs/left-arrow.svg";
-import Menu from "assets/svgs/menu.svg";
-import "./Header.css";
-import useMedia from "use-media";
+import Menu from 'assets/svgs/menu.svg';
+import { FC, useState } from 'react';
+import useMedia from 'use-media';
+import Logo from '../../assets/svgs/bunzz-logo.svg';
+import LeftArrow from '../../assets/svgs/left-arrow.svg';
+import './Header.css';
 
 const links = [
   {
-    name: "ABOUT",
-    href: "#about",
+    name: 'ABOUT',
+    href: '#about',
   },
   {
-    name: "MINT",
-    href: "#mint",
+    name: 'MINT',
+    href: '#mint',
   },
   {
-    name: "ROADMAP",
-    href: "#roadmap",
+    name: 'ROADMAP',
+    href: '#roadmap',
   },
   {
-    name: "TEAM",
-    href: "#team",
+    name: 'TEAM',
+    href: '#team',
   },
   {
-    name: "FAQ",
-    href: "#faq",
+    name: 'FAQ',
+    href: '#faq',
   },
 ];
 
 export const Header: FC = () => {
   const [isOpen, setIsOpen] = useState(false);
-  const isLarge = useMedia({ minWidth: "1024px" });
+  const isLarge = useMedia({ minWidth: '1024px' });
 
   return (
     <>

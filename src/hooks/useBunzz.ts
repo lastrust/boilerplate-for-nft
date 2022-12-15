@@ -1,22 +1,22 @@
-import bunzz, { Contract, Handler } from "bunzz-sdk";
-import { useEffect, useState } from "react";
-import { toast } from "react-toastify";
+import bunzz, { Contract, Handler } from 'bunzz-sdk';
+import { useEffect, useState } from 'react';
+import { toast } from 'react-toastify';
 
 // ===== Make changes as needed (start) =====
 export const chainId = 80001;
-const MODULE_NAME = "NFTMintingModule"; // This value is the name of module in Bunzz App.
+const MODULE_NAME = 'NFTMintingModule'; // This value is the name of module in Bunzz App.
 export const NETWORK_INFO = {
-  chainName: "Mumbai Testnet",
-  chainId: "0x" + chainId.toString(16),
-  nativeCurrency: { name: "MATIC", decimals: 18, symbol: "MATIC" },
-  rpcUrls: ["https://rpc-mumbai.maticvigil.com"],
+  chainName: 'Mumbai Testnet',
+  chainId: '0x' + chainId.toString(16),
+  nativeCurrency: { name: 'MATIC', decimals: 18, symbol: 'MATIC' },
+  rpcUrls: ['https://rpc-mumbai.maticvigil.com'],
 };
 const IPFS_GW_BASEURL_JSON = `https://cloudflare-ipfs.com/ipfs`;
 // ===== Make changes as needed (end) ======
 
 // You can get these values from "Client SDK" in sidebar of Bunzz App
-const DAPP_ID = process.env.REACT_APP_DAPP_ID || "";
-const API_KEY = process.env.REACT_APP_API_KEY || "";
+const DAPP_ID = process.env.REACT_APP_DAPP_ID || '';
+const API_KEY = process.env.REACT_APP_API_KEY || '';
 
 export type Metadata = {
   name: string;
@@ -31,15 +31,14 @@ export const useBunzz = () => {
   const [handler, setHandler] = useState<Handler>();
   const [contract, setContract] = useState<Contract>();
   const [readonlyContract, setReadonlyContract] = useState<Contract>();
-  const [signerAddr, setSignerAddr] = useState("");
+  const [signerAddr, setSignerAddr] = useState('');
 
   const [isInitializing, setIsInitializing] = useState(false);
   const [isMinting, setIsMinting] = useState(false);
   const [isSwitching, setIsSwitching] = useState(false);
-  const [isCorrectChain, setIsCorrectChain] = useState(false);
 
   const [maxSupply, setMaxSupply] = useState(0);
-  const [cost, setCost] = useState("");
+  const [cost, setCost] = useState('');
   const [mintedNum, setMintedNum] = useState(0);
   const [metadataList, setMetadataList] = useState<Metadata[]>();
 
@@ -72,7 +71,7 @@ export const useBunzz = () => {
       }
     } catch (error) {
       console.error(error);
-      toast.error("An error has occurred");
+      toast.error('An error has occurred');
     } finally {
       setIsInitializing(false);
     }
@@ -102,32 +101,7 @@ export const useBunzz = () => {
     await getOwnedNFTs(readonlyContract, signer);
 
     setContract(contract);
-    setIsCorrectChain(network.chainId === chainId);
     setSignerAddr(signer);
-  };
-
-  // Switch chain to the specified chain from bunzz application
-  const switchChain = async () => {
-    try {
-      setIsSwitching(true);
-
-      // Request to switch chain
-      await window.ethereum?.request({
-        method: "wallet_switchEthereumChain",
-        params: [{ chainId: "0x" + chainId.toString(16) }],
-      });
-    } catch (error) {
-      console.log(error);
-      // If the specified chain is not set in the user's metamask, request the addition of a chain
-      if ((error as any).code === 4902) {
-        await window.ethereum?.request({
-          method: "wallet_addEthereumChain",
-          params: [NETWORK_INFO],
-        });
-      }
-    } finally {
-      setIsSwitching(false);
-    }
   };
 
   // Mint NFTs by paying
@@ -144,14 +118,14 @@ export const useBunzz = () => {
       console.log(tx);
       const receipt = await tx.wait();
       console.log(receipt);
-      toast("NFT minted");
+      toast('NFT minted');
 
       // Refetch data to update UI
       await fetchInfo();
       await getOwnedNFTs(contract, signerAddr);
     } catch (error) {
       console.error(error);
-      toast.error("Mint failed");
+      toast.error('Mint failed');
     } finally {
       setIsMinting(false);
     }
@@ -195,7 +169,7 @@ export const useBunzz = () => {
   const getTokenIds = async (contract: Contract, address: string) => {
     const balanceRes = await contract.balanceOf(address);
     const balance = balanceRes.data;
-    let tokenIds: number[] = [];
+    const tokenIds: number[] = [];
     for (let i = 0; i < balance; i++) {
       const res = await contract.tokenOfOwnerByIndex(address, i);
       tokenIds.push(Number(res.data));
@@ -216,7 +190,7 @@ export const useBunzz = () => {
     const metadataList = await Promise.all(
       metadataURIs.map(async (uri) => {
         const res = await fetch(uri, {
-          method: "GET",
+          method: 'GET',
         });
         const body = await res.json();
         const imageURISuffix = getHashFromIpfsUri(body.image);
@@ -235,18 +209,15 @@ export const useBunzz = () => {
     signerAddr,
     isInitializing,
     isMinting,
-    isSwitching,
-    isCorrectChain,
     cost,
     maxSupply,
     mintedNum,
     metadataList,
     mint,
-    switchChain,
     connect,
   };
 };
 
 const getHashFromIpfsUri = (uri: string): string => {
-  return uri.split("//")[1];
+  return uri.split('//')[1];
 };

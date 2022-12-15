@@ -1,6 +1,6 @@
-import { FC } from "react";
-import { AccordionItem } from "../../Accordion/Accordion";
-import "./QuestionsCard.css";
+import { FC } from 'react';
+import { AccordionItem } from '../../Accordion/Accordion';
+import './QuestionsCard.css';
 
 export const Questions: FC = () => {
   return (
