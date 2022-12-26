@@ -1,13 +1,15 @@
-import { NETWORK_INFO, UseBunzzReturns } from 'hooks/useBunzz';
+import { NETWORK_INFO } from 'hooks/useBunzz';
 import { FC, useState } from 'react';
+import { UseContractReturns } from '../../hooks/useContract';
 import { ConnectWallet } from '../ConnectWallet/ConnectWallet';
 import { MintForm } from '../MintForm/MintForm';
 import { NftList } from '../NftList/NftList';
-import { SwitchChain } from '../SwitchChain/SwitchChain';
 import './MintPanel.css';
 
-type Props = UseBunzzReturns & {
+type Props = UseContractReturns & {
   imageSrc: string;
+  connectHandler: () => void;
+  signerAddr: string;
 };
 
 export const MintPanel: FC<Props> = (props) => {
@@ -17,17 +19,17 @@ export const MintPanel: FC<Props> = (props) => {
     cost,
     mintedNum,
     signerAddr,
-    isCorrectChain,
     metadataList,
+    connectHandler,
   } = props;
   const [amount, setAmount] = useState(1);
 
   const MintBody = () => {
-    if (signerAddr && isCorrectChain)
+    console.log(props);
+    if (signerAddr !== 'undefined')
       return <MintForm {...props} setAmount={setAmount} amount={amount} />;
-    if (signerAddr && !isCorrectChain) return <SwitchChain />;
 
-    return <ConnectWallet />;
+    return <ConnectWallet onClickHandler={connectHandler} />;
   };
 
   return (

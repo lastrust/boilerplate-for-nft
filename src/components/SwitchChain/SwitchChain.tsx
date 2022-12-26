@@ -3,10 +3,6 @@ import { chainId, NETWORK_INFO } from '../../hooks/useBunzz';
 import { Button } from '../Button/Button';
 
 export const SwitchChain: FC = () => {
-  const [isCorrectChain, setIsCorrectChain] = useState(false);
-
-  setIsCorrectChain(network.chainId === chainId);
-
   const [isSwitching, setIsSwitching] = useState(false);
 
   // Switch chain to the specified chain from bunzz application

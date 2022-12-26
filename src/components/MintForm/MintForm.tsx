@@ -1,12 +1,14 @@
 import { FC } from 'react';
 import Check from '../../assets/svgs/check.svg';
-import { NETWORK_INFO, UseBunzzReturns } from '../../hooks/useBunzz';
+import { NETWORK_INFO } from '../../hooks/useBunzz';
+import { UseContractReturns } from '../../hooks/useContract';
 import { Button } from '../Button/Button';
 import { NumberInput } from '../Input/NumberInput/NumberInput';
 
-type Props = UseBunzzReturns & {
+type Props = UseContractReturns & {
   setAmount: (amount: number) => void;
   amount: number;
+  signerAddr: string;
 };
 
 export const MintForm: FC<Props> = ({
@@ -31,7 +33,7 @@ export const MintForm: FC<Props> = ({
         </div>
         <Button
           variant="solid"
-          onClick={() => mint(amount)}
+          onClick={() => mint(amount, signerAddr)}
           isLoading={isMinting}
           style={{ width: '100%' }}
           disabled={mintedNum === maxSupply}

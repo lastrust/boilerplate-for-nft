@@ -8,10 +8,8 @@ import App from './App';
 import './index.css';
 import reportWebVitals from './reportWebVitals';
 
-function getLibrary(provider: any): Web3Provider {
-  const library = new Web3Provider(provider);
-  library.pollingInterval = 12000;
-  return library;
+function getLibrary(provider: any) {
+  return new Web3Provider(provider);
 }
 
 const root = ReactDOM.createRoot(

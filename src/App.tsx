@@ -9,20 +9,25 @@ import { MemberCard } from 'components/Card/MemberCard/MemberCard';
 import { Questions } from 'components/Card/QuestionsCard/QuestionsCard';
 import { Footer } from 'components/Footer/Footer';
 import { Header } from 'components/Header/Header';
-import { MintPanel } from 'components/MintPanel/MintPanel';
-import { useBunzz } from 'hooks/useBunzz';
 import useMedia from 'use-media';
 import './App.css';
+import { MintPanel } from './components/MintPanel/MintPanel';
+import { useConnectWallet } from './hooks/useConnectWallet';
+import { useContract } from './hooks/useContract';
 
 function App() {
-  const bunzz = useBunzz();
+  const { library, ...wallet } = useConnectWallet();
+  const contract = useContract(
+    '0xbe4c2C4425289d316b7f455E6e62db91a34EcFC9',
+    library,
+    wallet.active
+  );
 
   const isMedium = useMedia({ minWidth: '768px' });
 
   return (
     <div className="App">
       <Header />
-
       <main className="main">
         <section className="first-section about-section p-app">
           <div>
@@ -37,7 +42,12 @@ function App() {
 
         <section className="section p-app mint-section" id="mint">
           <h1 className="h1 align-center">Mint</h1>
-          <MintPanel imageSrc={SampleImg} {...bunzz} />
+          <MintPanel
+            imageSrc={SampleImg}
+            signerAddr={String(wallet?.account)}
+            {...wallet}
+            {...contract}
+          />
         </section>
 
         <section
