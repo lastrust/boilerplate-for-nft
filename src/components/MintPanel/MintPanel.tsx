@@ -25,7 +25,6 @@ export const MintPanel: FC<Props> = (props) => {
   const [amount, setAmount] = useState(1);
 
   const MintBody = () => {
-    console.log(props);
     if (signerAddr !== 'undefined')
       return <MintForm {...props} setAmount={setAmount} amount={amount} />;
 

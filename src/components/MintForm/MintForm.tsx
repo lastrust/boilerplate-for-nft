@@ -12,6 +12,7 @@ type Props = UseContractReturns & {
 };
 
 export const MintForm: FC<Props> = ({
+  contract,
   signerAddr,
   amount,
   isMinting,
@@ -33,7 +34,7 @@ export const MintForm: FC<Props> = ({
         </div>
         <Button
           variant="solid"
-          onClick={() => mint(amount, signerAddr)}
+          onClick={() => mint(contract, amount, signerAddr)}
           isLoading={isMinting}
           style={{ width: '100%' }}
           disabled={mintedNum === maxSupply}

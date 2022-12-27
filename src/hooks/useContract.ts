@@ -22,7 +22,9 @@ export const useContract = (
   library: Web3Provider | undefined,
   active: boolean
 ) => {
-  const [contract] = useState(new Contract(address, abi, library));
+  const [contract, setContract] = useState<Contract>(
+    new Contract(address, abi, library?.getSigner())
+  );
   const [maxSupply, setMaxSupply] = useState(0);
   const [cost, setCost] = useState('');
   const [mintedNum, setMintedNum] = useState(0);
@@ -30,7 +32,7 @@ export const useContract = (
   const [isMinting, setIsMinting] = useState(false);
 
   // Get token ids from contracts
-  const getTokenIds = async (address: string) => {
+  const getTokenIds = async (contract: Contract, address: string) => {
     const balanceRes = await contract.balanceOf(address);
     const balance = balanceRes.data;
     const tokenIds: number[] = [];
@@ -44,11 +46,15 @@ export const useContract = (
   };
 
   useEffect(() => {
-    if (active) fetchInfo();
+    if (active) {
+      const con = new Contract(address, abi, library?.getSigner());
+      setContract(con);
+      fetchInfo(con);
+    }
   }, [active]);
 
   // Get metadata from IPFS
-  const getMetadata = async (tokenIds: number[]) => {
+  const getMetadata = async (contract: Contract, tokenIds: number[]) => {
     const metadataURIs = await Promise.all(
       tokenIds.map(async (tokenId) => {
         const tokenURI = await contract.tokenURI(tokenId);
@@ -74,40 +80,44 @@ export const useContract = (
   };
 
   // Fetch information related to NFT
-  const fetchInfo = async () => {
-    await getMaxSupply();
-    await getCost();
-    await getMintedNum();
+  const fetchInfo = async (contract: Contract) => {
+    await getMaxSupply(contract);
+    await getCost(contract);
+    await getMintedNum(contract);
   };
 
   // Get max supply from contract
-  const getMaxSupply = async () => {
+  const getMaxSupply = async (contract: Contract) => {
     const maxSupply = await contract.maxSupply();
-    console.log(maxSupply);
-    setMaxSupply(parseInt(maxSupply.data));
+
+    setMaxSupply(parseInt(maxSupply._hex));
   };
 
   // Get cost from contract
-  const getCost = async () => {
+  const getCost = async (contract: Contract) => {
     const res = await contract.publicCost();
-    setCost((Number(res.data) / 10 ** 18).toString());
+    setCost((Number(res._hex) / 10 ** 18).toString());
   };
 
   // Get number of minted from contract
-  const getMintedNum = async () => {
+  const getMintedNum = async (contract: Contract) => {
     const res = await contract.totalSupply();
-    setMintedNum(parseInt(res.data));
+    setMintedNum(parseInt(res._hex));
   };
 
   // Get owned NFTs from contract and IPFS
-  const getOwnedNFTs = async (address: string) => {
-    const tokenIds = await getTokenIds(address);
-    const metadataList = await getMetadata(tokenIds);
+  const getOwnedNFTs = async (contract: Contract, address: string) => {
+    const tokenIds = await getTokenIds(contract, address);
+    const metadataList = await getMetadata(contract, tokenIds);
 
     setMetadataList(metadataList);
   };
   // Mint NFTs by paying
-  const mint = async (amount: number, signerAddr: string) => {
+  const mint = async (
+    contract: Contract,
+    amount: number,
+    signerAddr: string
+  ) => {
     if (!contract || !signerAddr) return;
 
     try {
@@ -123,8 +133,8 @@ export const useContract = (
       toast('NFT minted');
 
       // Refetch data to update UI
-      await fetchInfo();
-      await getOwnedNFTs(signerAddr);
+      await fetchInfo(contract);
+      await getOwnedNFTs(contract, signerAddr);
     } catch (error) {
       console.error(error);
       toast.error('Mint failed');

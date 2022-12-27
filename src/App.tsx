@@ -18,7 +18,7 @@ import { useContract } from './hooks/useContract';
 function App() {
   const { library, ...wallet } = useConnectWallet();
   const contract = useContract(
-    '0xbe4c2C4425289d316b7f455E6e62db91a34EcFC9',
+    '0xC74D552c7c95417c17C70699ab5BE2C30723Bf2e',
     library,
     wallet.active
   );
