@@ -1,7 +1,7 @@
-import { FC } from "react";
-import "./NumberInput.css";
-import Minus from "assets/svgs/minus.svg";
-import Plus from "assets/svgs/plus.svg";
+import Minus from 'assets/svgs/minus.svg';
+import Plus from 'assets/svgs/plus.svg';
+import { FC } from 'react';
+import './NumberInput.css';
 
 type Props = {
   onChange: (value: number) => void;

@@ -1,6 +1,6 @@
-import { FC, useState } from "react";
-import DownArrow from "assets/svgs/down-arrow.svg";
-import "./AccordionItem.css";
+import DownArrow from 'assets/svgs/down-arrow.svg';
+import { FC, useState } from 'react';
+import './AccordionItem.css';
 
 type Props = {
   title: string;

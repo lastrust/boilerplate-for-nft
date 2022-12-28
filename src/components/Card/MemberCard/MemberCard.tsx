@@ -1,6 +1,6 @@
-import { FC } from "react";
-import "./MemberCard.css";
-import Twitter from "assets/svgs/twitter-black.svg";
+import Twitter from 'assets/svgs/twitter-black.svg';
+import { FC } from 'react';
+import './MemberCard.css';
 
 type Props = {
   imageSrc: string;
@@ -25,7 +25,12 @@ export const MemberCard: FC<Props> = ({
           <div className="role">{role}</div>
         </div>
 
-        <a className="twitter-btn" href={twitterLink} target="_blank">
+        <a
+          className="twitter-btn"
+          href={twitterLink}
+          target="_blank"
+          rel="noreferrer"
+        >
           <img src={Twitter} />
         </a>
       </div>

@@ -1,10 +1,10 @@
-import { FC } from "react";
-import "./Footer.css";
-import Opensea from "assets/svgs/opensea.svg";
-import Eye from "assets/svgs/eye.svg";
-import TofuNFT from "assets/svgs/tofu-nft.svg";
-import Discord from "assets/svgs/discord.svg";
-import Twitter from "assets/svgs/twitter.svg";
+import Discord from 'assets/svgs/discord.svg';
+import Eye from 'assets/svgs/eye.svg';
+import Opensea from 'assets/svgs/opensea.svg';
+import TofuNFT from 'assets/svgs/tofu-nft.svg';
+import Twitter from 'assets/svgs/twitter.svg';
+import { FC } from 'react';
+import './Footer.css';
 
 export const Footer: FC = () => {
   return (
