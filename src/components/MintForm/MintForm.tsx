@@ -1,6 +1,6 @@
 import { FC } from 'react';
 import Check from '../../assets/svgs/check.svg';
-import { NETWORK_INFO } from '../../hooks/useBunzz';
+import { NETWORK_INFO } from '../../const/networkInfo';
 import { UseContractReturns } from '../../hooks/useContract';
 import { Button } from '../Button/Button';
 import { NumberInput } from '../Input/NumberInput/NumberInput';

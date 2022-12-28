@@ -1,5 +1,5 @@
 import { FC, useState } from 'react';
-import { chainId, NETWORK_INFO } from '../../hooks/useBunzz';
+import { chainId, NETWORK_INFO } from '../../const/networkInfo';
 import { Button } from '../Button/Button';
 
 export const SwitchChain: FC = () => {

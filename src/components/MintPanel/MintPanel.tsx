@@ -1,4 +1,4 @@
-import { NETWORK_INFO } from 'hooks/useBunzz';
+import { NETWORK_INFO } from 'const/networkInfo';
 import { FC, useState } from 'react';
 import { UseContractReturns } from '../../hooks/useContract';
 import { ConnectWallet } from '../ConnectWallet/ConnectWallet';

@@ -18,7 +18,7 @@ import { useContract } from './hooks/useContract';
 function App() {
   const { library, ...wallet } = useConnectWallet();
   const contract = useContract(
-    '0xC74D552c7c95417c17C70699ab5BE2C30723Bf2e',
+    process.env.REACT_APP_CONTRACT_ADDRESS || '',
     library,
     wallet.active
   );
