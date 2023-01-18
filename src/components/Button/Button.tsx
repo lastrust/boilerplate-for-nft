@@ -1,21 +1,21 @@
-import { Loading } from "components/Loading/Loading";
-import { ButtonHTMLAttributes, FC, ReactNode } from "react";
-import "./Button.css";
+import { Loading } from 'components/Loading/Loading';
+import { ButtonHTMLAttributes, FC, ReactNode } from 'react';
+import './Button.css';
 
 type Props = ButtonHTMLAttributes<HTMLButtonElement> & {
   children: ReactNode;
-  variant?: "outline" | "solid";
+  variant?: 'outline' | 'solid';
   isLoading?: boolean;
 };
 
 const variants = {
-  solid: "solid",
-  outline: "outline",
+  solid: 'solid',
+  outline: 'outline',
 };
 
 export const Button: FC<Props> = ({
   children,
-  variant = "solid",
+  variant = 'solid',
   isLoading,
   ...props
 }) => {
@@ -26,7 +26,7 @@ export const Button: FC<Props> = ({
       {...props}
     >
       {isLoading ? (
-        <Loading color={variant === "solid" ? "white" : "black"} />
+        <Loading color={variant === 'solid' ? 'white' : 'black'} />
       ) : (
         children
       )}

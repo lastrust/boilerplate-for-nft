@@ -1,18 +1,27 @@
-import React from "react";
-import ReactDOM from "react-dom/client";
-import "./index.css";
-import App from "./App";
-import reportWebVitals from "./reportWebVitals";
-import "react-toastify/dist/ReactToastify.css";
-import { ToastContainer } from "react-toastify";
+import { Web3Provider } from '@ethersproject/providers';
+import { Web3ReactProvider } from '@web3-react/core';
+import React from 'react';
+import ReactDOM from 'react-dom/client';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import App from './App';
+import './index.css';
+import reportWebVitals from './reportWebVitals';
+
+function getLibrary(provider: any) {
+  return new Web3Provider(provider);
+}
 
 const root = ReactDOM.createRoot(
-  document.getElementById("root") as HTMLElement
+  document.getElementById('root') as HTMLElement
 );
+
 root.render(
   <React.StrictMode>
-    <App />
-    <ToastContainer />
+    <Web3ReactProvider getLibrary={getLibrary}>
+      <App />
+      <ToastContainer />
+    </Web3ReactProvider>
   </React.StrictMode>
 );
 

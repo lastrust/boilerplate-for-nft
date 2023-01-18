@@ -1,28 +1,33 @@
-import { Header } from "components/Header/Header";
-import "./App.css";
-import Coins from "assets/svgs/coins.svg";
-import { MintCard } from "components/Card/MintCard/MintCard";
-import SampleImg from "assets/images/sample1.png";
-import MemberImg1 from "assets/images/member1.png";
-import MemberImg2 from "assets/images/member2.png";
-import MemberImg3 from "assets/images/member3.png";
-import LoadmapSm from "assets/svgs/loadmap-sm.svg";
-import LoadmapLg from "assets/svgs/loadmap-lg.svg";
-import { MemberCard } from "components/Card/MemberCard/MemberCard";
-import { Questions } from "components/Card/QuestionsCard/QuestionsCard";
-import { Footer } from "components/Footer/Footer";
-import { useBunzz } from "hooks/useBunzz";
-import useMedia from "use-media";
+import MemberImg1 from 'assets/images/member1.png';
+import MemberImg2 from 'assets/images/member2.png';
+import MemberImg3 from 'assets/images/member3.png';
+import SampleImg from 'assets/images/sample1.png';
+import CoinsImg from 'assets/svgs/coins.svg';
+import LoadmapLg from 'assets/svgs/loadmap-lg.svg';
+import LoadmapSm from 'assets/svgs/loadmap-sm.svg';
+import { MemberCard } from 'components/Card/MemberCard/MemberCard';
+import { Questions } from 'components/Card/QuestionsCard/QuestionsCard';
+import { Footer } from 'components/Footer/Footer';
+import { Header } from 'components/Header/Header';
+import useMedia from 'use-media';
+import './App.css';
+import { MintPanel } from './components/MintPanel/MintPanel';
+import { useConnectWallet } from './hooks/useConnectWallet';
+import { useContract } from './hooks/useContract';
 
 function App() {
-  const bunzz = useBunzz();
+  const { library, ...wallet } = useConnectWallet();
+  const contract = useContract(
+    process.env.REACT_APP_CONTRACT_ADDRESS || '',
+    library,
+    wallet.active
+  );
 
-  const isMedium = useMedia({ minWidth: "768px" });
+  const isMedium = useMedia({ minWidth: '768px' });
 
   return (
     <div className="App">
       <Header />
-
       <main className="main">
         <section className="first-section about-section p-app">
           <div>
@@ -32,16 +37,21 @@ function App() {
               Velit occaecati et et blanditiis ab placeat qui.
             </p>
           </div>
-          <img src={Coins} className="coins" />
+          <img src={CoinsImg} className="coins" />
         </section>
 
         <section className="section p-app mint-section" id="mint">
           <h1 className="h1 align-center">Mint</h1>
-          <MintCard imageSrc={SampleImg} {...bunzz} />
+          <MintPanel
+            imageSrc={SampleImg}
+            signerAddr={String(wallet?.account)}
+            {...wallet}
+            {...contract}
+          />
         </section>
 
         <section
-          className={`section roadmap-section ${isMedium ? "" : "p-app"}`}
+          className={`section roadmap-section ${isMedium ? '' : 'p-app'}`}
           id="roadmap"
         >
           <h1 className="h1 align-center">Roadmap</h1>
