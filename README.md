@@ -1,3 +1,4 @@
+
 # Boilerplate for NFT Minting Application
 
 This boilerplate is for NFT Minting applications. Using this boiler plate, a minting site can be created in about 30 minutes.
